@@ -1,0 +1,53 @@
+# AlexNet Web App
+
+This is a simple web app that uses the original AlexNet model trained on CIFAR-10. You can upload an image and it will predict what class it belongs to.
+
+<p align="center">
+  <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS13ybPpIr4NwFj9V5_93hngtjbEIQKS4wpMgpZ0IqMfg&s=10" alt="AlexNet Architecture Diagram" width="500">
+</p>
+
+---
+
+## Tech Stack Used
+
+- **FastAPI** (Python web framework)
+- **PyTorch** (for loading and running the model)
+- **HTML, CSS, JavaScript** (custom retro cyberpunk UI)
+
+---
+
+## Folder Structure
+
+Here is how the project is organized:
+
+```text
+AlexNetWebApp/
+├── app/
+│   ├── pages/                  # html files
+│   ├── plugins/                # model and helper for model
+│   ├── static/                 # css , js , model.pth and images
+│   │   ├── css/index.css       # retro mecha style art
+│   │   ├── js/index.js         # api handler
+│   │   └── retro_anime_banner.png # retro anime style art
+│   └── __main__.py             # fastapi code lives here
+└── requirements.txt            # python dependencies
+```
+
+---
+
+## How to run this
+
+### 1. Install dependencies
+```bash
+pip3 install -r requirements.txt
+```
+
+### 2. Run the server
+```bash
+uvicorn app.__main__:app --port 3000 --reload
+```
+Open `http://localhost:3000` in your browser.
+
+---
+
+Byee Byee 🌸
