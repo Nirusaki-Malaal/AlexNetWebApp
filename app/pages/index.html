@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang='en'>
+<head>
+    <meta charset='utf-8'>
+    <meta name='viewport' content='width=device-width, initial-scale=1'>
+    <title>Page Title</title>
+    <link rel='stylesheet' href='static/css/index.css'>
+</head>
+<body>
+    <h1 id="heading">AlexNet WebApp</h1>
+    <form id="form">
+        <div id="user-info"><p>PLEASE ENTER YOUR IMAGE HERE TO USE RESNET</p></div>
+        <input type="file" id="input-image" name="file" accept="image/*" required>
+        <br><br>
+        <button id="submit-btn" type="button">Predict</button>
+    </form>
+    <p hidden id="output-class"></p>
+    <script src="static/js/index.js"></script>
+</body>
+</html>
