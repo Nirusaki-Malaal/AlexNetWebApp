@@ -1,3 +1,4 @@
+import os
 from app import app, templates, LOGS
 from fastapi.responses import HTMLResponse
 from fastapi.requests import Request
@@ -31,4 +32,5 @@ async def help_message(request : Request):
     with open(directory, "wb") as f:
         f.write(contents)
     max_class = process_directory(directory)
+    os.remove(directory)
     return {"maximum_class" : max_class}
