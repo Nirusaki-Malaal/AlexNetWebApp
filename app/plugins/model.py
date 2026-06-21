@@ -14,7 +14,7 @@ if DOWNLOAD_LINK:
 
 
 class Model(nn.Module):
-    def __init__(self, num_classes=10, alpha=1e-4):
+    def __init__(self, num_classes=10, alpha=1e-3, epochs=30):
 
         ## ENABLING NN.MODULE TO REGISTER LAYERS
         super().__init__() 
@@ -24,16 +24,21 @@ class Model(nn.Module):
         # FEATURE EXTRACTOR
         self.features = nn.Sequential(
             nn.Conv2d(3, 64, kernel_size=11, stride=4, padding=2), # Conv1
+            nn.BatchNorm2d(64),
             nn.ReLU(inplace=True),
             nn.MaxPool2d(kernel_size=3, stride=2), # max pool 1
             nn.Conv2d(64,192, kernel_size=5, padding=2), # conv 2
+            nn.BatchNorm2d(192),
             nn.ReLU(inplace=True),
             nn.MaxPool2d(kernel_size=3, stride=2),
             nn.Conv2d(192,384,kernel_size=3,padding=1), # conv 3
+            nn.BatchNorm2d(384),
             nn.ReLU(inplace=True),
             nn.Conv2d(384,256, kernel_size=3, padding=1), # conv 4
+            nn.BatchNorm2d(256),
             nn.ReLU(inplace=True),
             nn.Conv2d(256, 256, kernel_size=3, padding=1), #conv 5
+            nn.BatchNorm2d(256),
             nn.ReLU(inplace=True),
             nn.MaxPool2d(kernel_size=3, stride=2), # max pooling
 
@@ -41,27 +46,39 @@ class Model(nn.Module):
         
         # FULLY CONNECTED LAYER
         self.classifier = nn.Sequential(
-            nn.Dropout(0.5),
+            nn.Dropout(0.3),
             nn.Linear(256*6*6,4096),
             nn.ReLU(inplace=True),
-            nn.Dropout(0.5),
+            nn.Dropout(0.3),
             nn.Linear(4096, 4096),
             nn.ReLU(inplace=True),
             nn.Linear(4096, num_classes)
         )
         
         # TRANSFORM V2
-        self.transform = transform = v2.Compose(
+        train_transform = v2.Compose(
             [
+                v2.RandomHorizontalFlip(p=0.5),
+                v2.RandomCrop(32, padding=4),
+                v2.ColorJitter(brightness=0.2, contrast=0.2, saturation=0.2),
                 v2.Resize((227,227)),
-                v2.ToImage(), ### converts torch vision image format ko convert karna to pytorch format
-                v2.ToDtype(torch.float32, scale=True), ## converts the image back to tensor scaling it
+                v2.ToImage(),
+                v2.ToDtype(torch.float32, scale=True),
                 v2.Normalize(mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225]) ## these are the means and std of image net
             ]
         )
+
+        test_transform = v2.Compose(
+            [
+                v2.Resize((227, 227)),
+                v2.ToImage(),
+                v2.ToDtype(torch.float32, scale=True),
+                v2.Normalize(mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225])
+            ]
+        )
         # TRAIN DATASET
-        train_dataset = datasets.CIFAR10(root='./data', train=True, transform=transform, download=True)
-        test_dataset = datasets.CIFAR10(root='./data', train=False, transform=transform, download=True)
+        train_dataset = datasets.CIFAR10(root='./data', train=True, transform=train_transform, download=True)
+        test_dataset = datasets.CIFAR10(root='./data', train=False, transform=test_transform, download=True)
         
         # DATALOADER
         self.train_dataloader = DataLoader(train_dataset , batch_size=64, shuffle=True)
@@ -69,6 +86,7 @@ class Model(nn.Module):
         
         # GRADIENT DESCENTS AND LOSS F(X)
         self.optimizer = optimizers.Adam(self.parameters(), lr=self.alpha)
+        self.scheduler = optimizers.lr_scheduler.CosineAnnealingLR(self.optimizer, T_max=epochs, eta_min=1e-6)
         self.loss_fx = CrossEntropyLoss()
 
     # FORWARD PROPAGATION

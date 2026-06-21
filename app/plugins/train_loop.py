@@ -24,8 +24,9 @@ if DOWNLOAD_LINK:
 
 train_dataset = datasets.CIFAR10(root='./data', train=True, transform=transform, download=True)
 test_dataset = datasets.CIFAR10(root='./data', train=False, transform=transform, download=True)
+
 train_dataloader = DataLoader(train_dataset , batch_size=64, shuffle=True)
-test_dataloader = DataLoader(train_dataset, batch_size=64 , shuffle=False)
+test_dataloader = DataLoader(test_dataset, batch_size=64 , shuffle=False)
 
 
 model = AlexNet(alpha=ALPHA).to(DEVICE)
@@ -60,7 +61,7 @@ def test(dataloader, model, loss_fn):
     test_loss , correct = 0 , 0
     with torch.no_grad():
         for X,y in dataloader:
-            X,y = X.to(device), y.to(device)
+            X,y = X.to(DEVICE), y.to(DEVICE)
             pred = model(X)
             test_loss += loss_fn(pred,y).item()
             correct += (pred.argmax(1) == y).type(torch.float).sum().item()
