@@ -1,0 +1,16 @@
+.venv/
+venv/
+__pycache__/
+*.py[cod]
+*$py.class
+temp/*
+!temp/.gitkeep
+FastAPI@Log.txt
+.DS_Store
+.ipynb_checkpoints/
+
+# Exclude large binary model weights and datasets
+*.pth
+*.tar.gz
+data/
+data_test/

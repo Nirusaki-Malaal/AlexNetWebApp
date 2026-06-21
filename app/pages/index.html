@@ -3,18 +3,141 @@
 <head>
     <meta charset='utf-8'>
     <meta name='viewport' content='width=device-width, initial-scale=1'>
-    <title>Page Title</title>
+    <title>ALEXNET // DEEP LEARNING TERMINAL v1.0</title>
     <link rel='stylesheet' href='static/css/index.css'>
 </head>
 <body>
-    <h1 id="heading">AlexNet WebApp</h1>
-    <form id="form">
-        <div id="user-info"><p>PLEASE ENTER YOUR IMAGE HERE TO USE RESNET</p></div>
-        <input type="file" id="input-image" name="file" accept="image/*" required>
-        <br><br>
-        <button id="submit-btn" type="button">Predict</button>
-    </form>
-    <p hidden id="output-class"></p>
+    <div class="crt-overlay"></div>
+    <main class="cabinet">
+        <header class="header">
+            <div class="title">KANEDA_NET // MAIN_FRAME</div>
+            <span class="badge">ALEXNET v1.0</span>
+        </header>
+        <section class="led-panel">
+            <div class="led-group">
+                <div class="led power"></div>
+                <span>Power</span>
+            </div>
+            <div class="led-group">
+                <div class="led link"></div>
+                <span>Network</span>
+            </div>
+            <div class="led-group">
+                <div class="led scan" id="led-scan"></div>
+                <span>Analysis</span>
+            </div>
+        </section>
+        <section class="banner">
+            <img src="static/retro_anime_banner.png" alt="banner">
+            <div class="banner-overlay"></div>
+            <div class="banner-text">
+                <h1>ALEXNET WEBAPP</h1>
+                <p>NEURAL DIAGNOSTICS & COMPUTER VISION SYSTEM</p>
+            </div>
+        </section>
+        <div class="body">
+            <form id="form">
+                <div class="slot-wrap">
+                    <div class="dropzone" id="dropzone">
+                        <div class="slot-icon">💾</div>
+                        <div class="slot-title" id="slot-title">INSERT IMAGE CARTRIDGE</div>
+                        <div class="slot-desc" id="slot-subtitle">Drag & Drop file or click to browse</div>
+                        <div class="monitor" id="preview-monitor">
+                            <div class="scanner"></div>
+                            <img id="img-preview" src="" alt="preview">
+                        </div>
+                        <input type="file" id="input-image" name="file" accept="image/*" required>
+                    </div>
+                </div>
+                <div class="btn-panel">
+                    <button id="submit-btn" type="button">Predict</button>
+                </div>
+            </form>
+            <section class="terminal">
+                <div class="term-title">
+                    <span>SYSTEM DIAGNOSTICS</span>
+                    <span>LOG_SEC: 09</span>
+                </div>
+                <div class="log-row sys">> READY FOR INPUT. INSERT CARTRIDGE.</div>
+                <div class="log-row" id="terminal-file-status">> CARTRIDGE: NONE LOADED.</div>
+                <div class="log-row res">
+                    > PREDICTED CLASS: 
+                    <p hidden id="output-class"></p><span class="cursor"></span>
+                </div>
+            </section>
+        </div>
+    </main>
+    <script>
+        (function() {
+            const input = document.getElementById('input-image');
+            const zone = document.getElementById('dropzone');
+            const monitor = document.getElementById('preview-monitor');
+            const img = document.getElementById('img-preview');
+            const title = document.getElementById('slot-title');
+            const sub = document.getElementById('slot-subtitle');
+            const status = document.getElementById('terminal-file-status');
+            const led = document.getElementById('led-scan');
+            const btn = document.getElementById('submit-btn');
+            const out = document.getElementById('output-class');
+
+            zone.addEventListener('click', (e) => {
+                if (e.target !== input) {
+                    input.click();
+                }
+            });
+
+            ['dragenter', 'dragover'].forEach(e => {
+                zone.addEventListener(e, (evt) => {
+                    evt.preventDefault();
+                    zone.classList.add('dragover');
+                });
+            });
+            ['dragleave', 'drop'].forEach(e => {
+                zone.addEventListener(e, (evt) => {
+                    evt.preventDefault();
+                    zone.classList.remove('dragover');
+                });
+            });
+            zone.addEventListener('drop', (e) => {
+                const files = e.dataTransfer.files;
+                input.files = files;
+                showFile(files);
+            });
+            input.addEventListener('change', function() {
+                showFile(this.files);
+            });
+            function showFile(files) {
+                if (files && files[0]) {
+                    const file = files[0];
+                    if (file.type.startsWith('image/')) {
+                        const r = new FileReader();
+                        r.onload = (e) => {
+                            img.src = e.target.result;
+                            monitor.style.display = 'block';
+                            title.textContent = "CARTRIDGE LOADED";
+                            sub.textContent = `${file.name} (${(file.size / 1024).toFixed(1)} KB)`;
+                            status.textContent = "> CARTRIDGE MOUNTED: " + file.name.toUpperCase();
+                            status.classList.add('sys');
+                        };
+                        r.readAsDataURL(file);
+                    }
+                }
+            }
+            btn.addEventListener('click', () => {
+                if (input.files.length > 0) {
+                    led.classList.add('active');
+                    const obs = new MutationObserver(() => {
+                        led.classList.remove('active');
+                    });
+                    obs.observe(out, { childList: true, characterData: true, subtree: true, attributes: true });
+                    setTimeout(() => {
+                        led.classList.remove('active');
+                        obs.disconnect();
+                    }, 6000);
+                }
+            });
+        })();
+    </script>
     <script src="static/js/index.js"></script>
 </body>
 </html>
