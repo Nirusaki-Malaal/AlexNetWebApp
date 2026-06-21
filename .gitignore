@@ -14,3 +14,7 @@ FastAPI@Log.txt
 *.tar.gz
 data/
 data_test/
+
+# Ignore root-level training and model scripts
+/train.py
+/alexnet.py
