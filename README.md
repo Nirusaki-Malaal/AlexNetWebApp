@@ -1,6 +1,16 @@
 # AlexNet Web App
 
-This is a simple web app that uses the original AlexNet model trained on CIFAR-10. You can upload an image and it will predict what class it belongs to. with 78% accuracy in all test Cases
+This is a simple web app that uses the original AlexNet model trained on CIFAR-10. You can upload an image and it will predict what class it belongs to.
+
+<p align="center">
+  <img src="app/static/web_ui_screenshot.png" alt="AlexNet WebApp UI Screenshot" width="700">
+</p>
+
+---
+
+## Model & Architecture
+
+This implementation is based on the original AlexNet architecture:
 
 <p align="center">
   <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS13ybPpIr4NwFj9V5_93hngtjbEIQKS4wpMgpZ0IqMfg&s=10" alt="AlexNet Architecture Diagram" width="500">
@@ -32,6 +42,20 @@ AlexNetWebApp/
 │   └── __main__.py             # fastapi code lives here
 └── requirements.txt            # python dependencies
 ```
+
+---
+
+## Model Training & Inference Logs
+
+### Training Progress (Accuracy: 89.6% at Epoch 30)
+<p align="center">
+  <img src="app/static/training_log.png" alt="Training Progress Logs" width="600">
+</p>
+
+### Server Prediction Logs
+<p align="center">
+  <img src="app/static/inference_log.png" alt="Inference Server logs" width="600">
+</p>
 
 ---
 
