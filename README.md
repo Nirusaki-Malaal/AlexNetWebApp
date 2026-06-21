@@ -1,6 +1,6 @@
 # AlexNet Web App
 
-This is a simple web app that uses the original AlexNet model trained on CIFAR-10. You can upload an image and it will predict what class it belongs to.
+This is a simple web app that uses the original AlexNet model trained on CIFAR-10. You can upload an image and it will predict what class it belongs to. with 78% accuracy in all test Cases
 
 <p align="center">
   <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS13ybPpIr4NwFj9V5_93hngtjbEIQKS4wpMgpZ0IqMfg&s=10" alt="AlexNet Architecture Diagram" width="500">
